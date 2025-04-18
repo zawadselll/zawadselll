@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commanding Sentence Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+        <h1 class="text-2xl font-bold text-center mb-4">Commanding Sentence Generator</h1>
+        <div class="mb-4">
+            <label for="sentence" class="block text-sm font-medium text-gray-700">Enter Commanding Sentence:</label>
+            <input type="text" id="sentence" value="Do it now!" class="w-full border border-gray-300 px-3 py-1 rounded mt-2" placeholder="Type your sentence here">
+        </div>
+        <div class="mb-4">
+            <label for="count" class="block text-sm font-medium text-gray-700">Number of Repetitions (1-1000):</label>
+            <div class="flex items-center mt-2">
+                <button onclick="decreaseCount()" class="bg-red-500 text-white px-3 py-1 rounded-l hover:bg-red-600">-</button>
+                <input type="number" id="count" value="1" min="1" max="1000" class="w-full border border-gray-300 px-3 py-1 text-center" oninput="validateCount()">
+                <button onclick="increaseCount()" class="bg-green-500 text-white px-3 py-1 rounded-r hover:bg-green-600">+</button>
+            </div>
+        </div>
+        <button onclick="generateSentences()" class="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600">Generate</button>
+        <div id="output" class="mt-4 max-h-96 overflow-y-auto border border-gray-300 p-4 rounded"></div>
+    </div>
+
+    <script>
+        function validateCount() {
+            const countInput = document.getElementById('count');
+            let value = parseInt(countInput.value);
+            if (isNaN(value) || value < 1) {
+                countInput.value = 1;
+            } else if (value > 1000) {
+                countInput.value = 1000;
+            }
+        }
+
+        function increaseCount() {
+            const countInput = document.getElementById('count');
+            let value = parseInt(countInput.value);
+            if (value < 1000) {
+                countInput.value = value + 1;
+            }
+        }
+
+        function decreaseCount() {
+            const countInput = document.getElementById('count');
+            let value = parseInt(countInput.value);
+            if (value > 1) {
+                countInput.value = value - 1;
+            }
+        }
+
+        function generateSentences() {
+            const count = parseInt(document.getElementById('count').value);
+            const sentenceInput = document.getElementById('sentence').value.trim();
+            const outputDiv = document.getElementById('output');
+            outputDiv.innerHTML = '';
+
+            if (!sentenceInput) {
+                outputDiv.innerHTML = '<p class="text-red-500">Please enter a valid sentence.</p>';
+                return;
+            }
+
+            for (let i = 1; i <= count; i++) {
+                const p = document.createElement('p');
+                p.textContent = `${i}. ${sentenceInput}`;
+                outputDiv.appendChild(p);
+            }
+        }
+    </script>
+</body>
+</html>
